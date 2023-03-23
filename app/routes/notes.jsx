@@ -12,7 +12,7 @@ export default function NotesPage() {
 
 export async function action(data) {
   const { request } = data;
-  const formData = request.formData();
+  const formData = await request.formData();
 
   // const noteData = {
   //   title: formData.get('title'),

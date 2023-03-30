@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
 } from '@remix-run/react';
 import MainNavigation from './components/MainNavigation';
 
@@ -37,29 +38,60 @@ export default function App() {
   );
 }
 
+export function CatchBoundary() {
+  const caughtResponse = useCatch();
+
+  return (
+    <html lang='en'>
+      <head>
+        <Meta />
+        <Links />
+        <title>{caughtResponse.statusText}</title>
+      </head>
+      <body>
+        <header>
+          <MainNavigation />
+        </header>
+        <main className='error'>
+          <h1>{caughtResponse.statusText}</h1>
+          <p>{caughtResponse.data?.message || 'An error occurred!'}</p>
+          <p>
+            back to <Link to='/'>home</Link>
+          </p>
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
+}
+
 export function ErrorBoundary({ error }) {
-  <html lang='en'>
-    <head>
-      <Meta />
-      <Links />
-      <title>An error occurred</title>
-    </head>
-    <body>
-      <header>
-        <MainNavigation />
-      </header>
-      <main className='error'>
-        <h1>An error occurred</h1>
-        <p>{error.message}</p>
-        <p>
-          back to <Link to='/'>home</Link>
-        </p>
-      </main>
-      <ScrollRestoration />
-      <Scripts />
-      <LiveReload />
-    </body>
-  </html>;
+  return (
+    <html lang='en'>
+      <head>
+        <Meta />
+        <Links />
+        <title>An error occurred</title>
+      </head>
+      <body>
+        <header>
+          <MainNavigation />
+        </header>
+        <main className='error'>
+          <h1>An error occurred</h1>
+          <p>{error.message}</p>
+          <p>
+            back to <Link to='/'>home</Link>
+          </p>
+        </main>
+        <ScrollRestoration />
+        <Scripts />
+        <LiveReload />
+      </body>
+    </html>
+  );
 }
 
 export function links() {
